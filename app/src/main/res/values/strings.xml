@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Yangon University</string>
+    <string name="action_about">About</string>
+    <string name="action_search">Search</string>
+
+
+    <string name="navigation_drawer_open">Open Drawer</string>
+    <string name="navigation_drawer_close">Close Drawer</string>
+
+    <string name="nav_map">Map</string>
+    <string name="nav_departments">Department</string>
+
+    <string name="contents_about">This is an unofficial UY Application.
+        \nDeveloped by Aung Kyaw Paing, a student from Computer Studies Department As a Project
+    for Science Fair</string>
+</resources>
