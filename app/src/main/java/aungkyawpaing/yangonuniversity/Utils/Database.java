@@ -18,7 +18,7 @@ public class Database extends SQLiteAssetHelper {
 
     private SQLiteDatabase database;
     private static final String DATABASE_NAME = "yagonuniversity.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public Database(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

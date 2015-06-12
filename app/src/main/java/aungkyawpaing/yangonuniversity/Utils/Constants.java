@@ -5,4 +5,5 @@ package aungkyawpaing.yangonuniversity.Utils;
  */
 public class Constants {
     public static String ARG_DEPARMENT = "department";
+    public static String ARG_SEARCH = "search";
 }

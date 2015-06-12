@@ -1,20 +1,20 @@
 package aungkyawpaing.yangonuniversity.Fragments;
 
 import android.app.Activity;
-import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import aungkyawpaing.yangonuniversity.Activities.MainActivity;
+import aungkyawpaing.yangonuniversity.ClassModels.MarkerData;
+import aungkyawpaing.yangonuniversity.R;
+import aungkyawpaing.yangonuniversity.Utils.Database;
+import butterknife.ButterKnife;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,14 +26,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.VisibleRegion;
-
 import java.util.ArrayList;
-
-import aungkyawpaing.yangonuniversity.Activities.MainActivity;
-import aungkyawpaing.yangonuniversity.ClassModels.MarkerData;
-import aungkyawpaing.yangonuniversity.R;
-import aungkyawpaing.yangonuniversity.Utils.Database;
-import butterknife.ButterKnife;
 
 /**
  * Created by Vincent on 13-May-15.
@@ -64,6 +57,7 @@ public class CampusMapFragment extends Fragment {
 
         initalizeMap();
         setHasOptionsMenu(true);
+
         return rootView;
     }
 
@@ -143,16 +137,5 @@ public class CampusMapFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         ((MainActivity) activity).onSectionAttached(2);
-    }
-
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_search, menu);
-
-        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
     }
 }

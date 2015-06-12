@@ -30,14 +30,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Activities.SearchableActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
-        </activity>
-
         <activity
             android:name=".Activities.DetailActivity"
             android:label="Detail Activity"
@@ -50,10 +42,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDd9rVSRn6DWvsdF_E7X108JzZylh8XWgI"/>
-
-        <meta-data
-            android:name="android.app.default_searchable"
-            android:value="aungkyawpaing.yangonuniversity.Activities.SearchableActivity" />
     </application>
 
 </manifest>

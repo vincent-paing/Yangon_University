@@ -13,4 +13,7 @@
     <string name="contents_about">This is an unofficial UY Application.
         \nDeveloped by Aung Kyaw Paing, a student from Computer Studies Department As a Project
     for Science Fair</string>
+
+  <string name="navigation_item_one_title">Department</string>
+  <string name="navigation_item_two_title">Map</string>
 </resources>

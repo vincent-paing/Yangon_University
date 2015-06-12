@@ -5,14 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-
-import java.util.ArrayList;
-
 import aungkyawpaing.yangonuniversity.Activities.DetailActivity;
 import aungkyawpaing.yangonuniversity.Activities.MainActivity;
 import aungkyawpaing.yangonuniversity.Adapters.DepartmentAdapter;
@@ -22,13 +19,14 @@ import aungkyawpaing.yangonuniversity.Utils.Constants;
 import aungkyawpaing.yangonuniversity.Utils.Database;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import java.util.ArrayList;
 
 /**
  * Created by Vincent on 13-May-15.
  */
 public class DepartmentFragment extends Fragment {
 
-    @InjectView(R.id.department_list) ListView mDepartmentListView;
+    @InjectView(R.id.department_list) RecyclerView mDepartmentRecyclerView;
     private ArrayList<Department> mDepartmentList;
     private Database mDatabase;
 
@@ -45,16 +43,19 @@ public class DepartmentFragment extends Fragment {
         mDatabase = new Database(getActivity().getApplicationContext());
         mDepartmentList = new ArrayList<Department>();
         mDepartmentList.addAll(mDatabase.getAllDepartment());
-        mDepartmentListView.setAdapter(new DepartmentAdapter(getActivity().getApplicationContext(), mDepartmentList));
-        mDepartmentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mDepartmentRecyclerView.setLayoutManager(layoutManager);
+        DepartmentAdapter adapter = new DepartmentAdapter(mDepartmentList, getActivity());
+        adapter.setOnItemClickListener(new DepartmentAdapter.OnItemClickListener() {
+            @Override public void onItemClick(View view, int position) {
                 Intent intent = new Intent();
                 intent.setClass(getActivity().getApplicationContext(), DetailActivity.class);
                 intent.putExtra(Constants.ARG_DEPARMENT, mDepartmentList.get(position));
                 startActivity(intent);
             }
         });
+      mDepartmentRecyclerView.setAdapter(adapter);
         return rootView;
     }
 
