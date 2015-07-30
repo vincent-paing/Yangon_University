@@ -9,13 +9,15 @@
 
 # Add any project specific keep options here:
 
--dontwarn butterknife.internal.**
-
--keep class **$$ViewInjector { *; }
-
--keepnames class * { @butterknife.InjectView *;}
-
--dontwarn butterknife.Views$InjectViewProcessor
+-keepattributes *Annotation*
+-keep public class * extends android.support.design.widget.CoordinatorLayout.Behavior { *; }
+-keep public class * extends android.support.design.widget.ViewOffsetBehavior { *; }
+-keep class android.support.v4.app.** { *; }
+-keep interface android.support.v4.app.** { *; }
+-keep class android.support.v7.app.** { *; }
+-keep interface android.support.v7.app.** { *; }
+-keep class com.google.android.gms.maps.** { *; }
+-keep interface com.google.android.gms.maps.** { *; }
 
 -dontwarn com.gc.materialdesign.views.**
 
