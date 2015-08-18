@@ -1,6 +1,7 @@
 package aungkyawpaing.yangonuniversity.ClassModels;
 
 import android.content.Context;
+import java.io.Serializable;
 
 /**
  * Created by Vincent on 13-May-15.

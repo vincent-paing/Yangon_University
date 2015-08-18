@@ -1,23 +1,26 @@
 package aungkyawpaing.yangonuniversity.Activities;
 
-import android.content.SharedPreferences;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
-import android.preference.PreferenceManager;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import aungkyawpaing.yangonuniversity.Fragments.CampusMapFragment;
 import aungkyawpaing.yangonuniversity.Fragments.DepartmentFragment;
-import aungkyawpaing.yangonuniversity.Fragments.NavigationDrawerFragment;
+import aungkyawpaing.yangonuniversity.Fragments.SearchResultFragment;
 import aungkyawpaing.yangonuniversity.R;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -28,11 +31,15 @@ public class MainActivity extends AppCompatActivity {
   @InjectView(R.id.my_awesome_toolbar) Toolbar toolbar;
   @InjectView(R.id.navigation_view) NavigationView mNavigationView;
   @InjectView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+  @InjectView(R.id.app_bar) AppBarLayout mAppBarLayout;
 
   private final Handler mHandler = new Handler();
   private CharSequence mTitle;
   public static FragmentManager fragmentManager;
   private ActionBarDrawerToggle mDrawerToggle;
+  private SearchView searchView;
+  private MenuItem searchViewMenuItem;
+  private boolean isSearchResultFragmentLoaded = false;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -56,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
         R.string.navigation_drawer_close  /* "close drawer" description for accessibility */) {
       @Override public void onDrawerOpened(View drawerView) {
         super.onDrawerOpened(drawerView);
+        if (MenuItemCompat.isActionViewExpanded(searchViewMenuItem)) {
+          MenuItemCompat.collapseActionView(searchViewMenuItem);
+        }
         invalidateOptionsMenu();
       }
 
@@ -129,6 +139,14 @@ public class MainActivity extends AppCompatActivity {
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.menu_about, menu);
+
+    searchViewMenuItem = menu.findItem(R.id.action_search);
+    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+    searchView = (SearchView) searchViewMenuItem.getActionView();
+    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+    MenuItemCompat.setOnActionExpandListener(searchViewMenuItem, new SearchViewExpandListener());
+    searchView.setOnQueryTextListener(new SearchQueryListener());
+    searchView.setQueryHint("Map Search...");
     return super.onCreateOptionsMenu(menu);
   }
 
@@ -147,5 +165,67 @@ public class MainActivity extends AppCompatActivity {
   @Override public void onConfigurationChanged(Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
     mDrawerToggle.onConfigurationChanged(newConfig);
+  }
+
+  private class SearchViewExpandListener implements MenuItemCompat.OnActionExpandListener {
+
+    @Override public boolean onMenuItemActionExpand(MenuItem menuItem) {
+      setAllMenuItemVisiblity(toolbar.getMenu(), menuItem, false);
+      return true;
+    }
+
+    @Override public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+      setAllMenuItemVisiblity(toolbar.getMenu(), menuItem, true);
+      if (isSearchResultFragmentLoaded) {
+        fragmentManager.popBackStackImmediate();
+        isSearchResultFragmentLoaded = false;
+      }
+      return true;
+    }
+  }
+
+  public void setAllMenuItemVisiblity(Menu menu, MenuItem exception, boolean visibility) {
+    for (int i = 0; i < menu.size(); i++) {
+      MenuItem item = menu.getItem(i);
+      if (item != exception) {
+        item.setVisible(visibility);
+      }
+    }
+  }
+
+  @Override public void onBackPressed() {
+    if (MenuItemCompat.isActionViewExpanded(searchViewMenuItem)) {
+      MenuItemCompat.collapseActionView(searchViewMenuItem);
+    } else {
+      super.onBackPressed();
+    }
+  }
+
+  private class SearchQueryListener implements SearchView.OnQueryTextListener {
+
+    @Override public boolean onQueryTextSubmit(String s) {
+      if (isSearchResultFragmentLoaded) {
+        fragmentManager.popBackStackImmediate();
+      }
+      fragmentManager.beginTransaction()
+          .add(R.id.container, SearchResultFragment.newInstance(s))
+          .addToBackStack("result")
+          .commit();
+      isSearchResultFragmentLoaded = true;
+      searchView.clearFocus();
+      return true;
+    }
+
+    @Override public boolean onQueryTextChange(String s) {
+      return false;
+    }
+  }
+
+  public void onSearchResultClick(String query) {
+    mNavigationView.getMenu().getItem(1).setChecked(true);
+    fragmentManager.popBackStackImmediate();
+    fragmentManager.beginTransaction()
+        .replace(R.id.container, CampusMapFragment.newInstance(query))
+        .commit();
   }
 }

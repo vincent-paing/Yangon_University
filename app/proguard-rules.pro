@@ -18,6 +18,7 @@
 -keep interface android.support.v7.app.** { *; }
 -keep class com.google.android.gms.maps.** { *; }
 -keep interface com.google.android.gms.maps.** { *; }
+-keep class android.support.v7.widget.SearchView{ *; }
 
 -dontwarn com.gc.materialdesign.views.**
 

@@ -3,14 +3,10 @@ package aungkyawpaing.yangonuniversity.Utils;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
-import android.util.Log;
-import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
-
-import java.util.ArrayList;
-
 import aungkyawpaing.yangonuniversity.ClassModels.Department;
 import aungkyawpaing.yangonuniversity.ClassModels.MarkerData;
+import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
+import java.util.ArrayList;
 
 /**
  * Created by Vincent on 13-May-15.
@@ -20,6 +16,14 @@ public class Database extends SQLiteAssetHelper {
   private SQLiteDatabase database;
   private static final String DATABASE_NAME = "yagonuniversity.db";
   private static final int DATABASE_VERSION = 2;
+  private static Database mDatabase;
+
+  public static Database getDatbase(Context context) {
+    if (mDatabase == null) {
+      mDatabase = new Database(context);
+    }
+    return mDatabase;
+  }
 
   public Database(Context context) {
     super(context, DATABASE_NAME, null, DATABASE_VERSION);

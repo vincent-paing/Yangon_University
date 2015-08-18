@@ -8,8 +8,8 @@ android {
     applicationId "aungkyawpaing.yangonuniversity"
     minSdkVersion 15
     targetSdkVersion 22
-    versionCode 5
-    versionName "1.3"
+    versionCode 6
+    versionName "1.4"
   }
 
   signingConfigs {
@@ -20,6 +20,12 @@ android {
       keyPassword "killer662117"
     }
   }
+
+  packagingOptions {
+    exclude '.readme'
+  }
+
+
   buildTypes {
     debug {
       debuggable true
@@ -42,11 +48,12 @@ dependencies {
   compile 'com.android.support:appcompat-v7:22.2.1'
   compile 'com.android.support:support-v4:22.2.1'
   compile 'com.squareup.picasso:picasso:2.5.2'
-  compile 'com.google.android.gms:play-services:7.5.0'
-  compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
+  compile 'com.google.android.gms:play-services:7.8.0'
+  compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
   compile 'com.jakewharton:butterknife:6.1.0'
   compile 'com.afollestad:material-dialogs:0.7.3.0'
   compile 'com.github.johnkil.android-robototextview:robototextview:2.4.0'
   compile 'com.android.support:design:22.2.1'
   compile 'com.android.support:recyclerview-v7:22.2.1'
+  compile 'com.android.support:cardview-v7:22.2.1'
 }
