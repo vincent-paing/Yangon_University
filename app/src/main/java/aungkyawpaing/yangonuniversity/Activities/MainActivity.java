@@ -1,7 +1,10 @@
 package aungkyawpaing.yangonuniversity.Activities;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,9 +25,10 @@ import aungkyawpaing.yangonuniversity.Fragments.CampusMapFragment;
 import aungkyawpaing.yangonuniversity.Fragments.DepartmentFragment;
 import aungkyawpaing.yangonuniversity.Fragments.SearchResultFragment;
 import aungkyawpaing.yangonuniversity.R;
+import aungkyawpaing.yangonuniversity.Utils.Util;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,12 +44,16 @@ public class MainActivity extends AppCompatActivity {
   private SearchView searchView;
   private MenuItem searchViewMenuItem;
   private boolean isSearchResultFragmentLoaded = false;
+  private Activity mActivity;
+  private Context mContext;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     ButterKnife.inject(this);
 
+    mActivity = this;
+    mContext = getApplicationContext();
     setSupportActionBar(toolbar);
     mTitle = getTitle();
     fragmentManager = getSupportFragmentManager();
@@ -98,13 +106,16 @@ public class MainActivity extends AppCompatActivity {
                 }, 300);
                 return true;
               case R.id.navigation_item_2:
-                mHandler.postDelayed(new Runnable() {
-                  @Override public void run() {
-                    fragmentManager.beginTransaction()
-                        .replace(R.id.container, CampusMapFragment.newInstance())
-                        .commit();
-                  }
-                }, 300);
+                if (Util.checkifPlayServiceAvaiable(getApplicationContext(), mActivity)) {
+                  mHandler.postDelayed(new Runnable() {
+                    @Override public void run() {
+                      fragmentManager.beginTransaction()
+                          .replace(R.id.container, CampusMapFragment.newInstance())
+                          .commit();
+                      mAppBarLayout.setExpanded(true);
+                    }
+                  }, 300);
+                }
                 return true;
               default:
                 return false;
@@ -134,7 +145,9 @@ public class MainActivity extends AppCompatActivity {
   }
 
   public void updateTitle() {
-    toolbar.setTitle(mTitle);
+    if (mTitle != null) {
+      toolbar.setTitle(mTitle);
+    }
   }
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -153,9 +166,10 @@ public class MainActivity extends AppCompatActivity {
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case R.id.action_about:
-        new MaterialDialog.Builder(this).title(R.string.action_about)
-            .content(R.string.contents_about)
-            .positiveText("OK")
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle(R.string.action_about)
+            .setMessage(R.string.contents_about)
+            .setPositiveButton("OK", null)
             .show();
         return true;
     }
@@ -224,8 +238,10 @@ public class MainActivity extends AppCompatActivity {
   public void onSearchResultClick(String query) {
     mNavigationView.getMenu().getItem(1).setChecked(true);
     fragmentManager.popBackStackImmediate();
-    fragmentManager.beginTransaction()
-        .replace(R.id.container, CampusMapFragment.newInstance(query))
-        .commit();
+    if (Util.checkifPlayServiceAvaiable(getApplicationContext(), mActivity)) {
+      fragmentManager.beginTransaction()
+          .replace(R.id.container, CampusMapFragment.newInstance(query))
+          .commit();
+    }
   }
 }

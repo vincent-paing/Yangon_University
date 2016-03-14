@@ -31,10 +31,10 @@ public class Database extends SQLiteAssetHelper {
   }
 
   public ArrayList<Department> getAllDepartment() {
-    ArrayList<Department> department_list = new ArrayList<Department>();
     String get_all_dept = "SELECT * FROM tbl_department";
     database = getReadableDatabase();
     Cursor c = database.rawQuery(get_all_dept, null);
+    ArrayList<Department> department_list = new ArrayList<Department>(c.getCount());
     if (c.moveToFirst()) {
       do {
         Department temp_Department = new Department();
@@ -52,10 +52,10 @@ public class Database extends SQLiteAssetHelper {
   }
 
   public ArrayList<MarkerData> getallMarkers() {
-    ArrayList<MarkerData> markerdata_list = new ArrayList<MarkerData>();
     String get_all_marker = "SELECT * FROM tbl_marker";
     database = getReadableDatabase();
     Cursor c = database.rawQuery(get_all_marker, null);
+    ArrayList<MarkerData> markerdata_list = new ArrayList<MarkerData>(c.getCount());
     if (c.moveToFirst()) {
       do {
         MarkerData markerdata = new MarkerData();

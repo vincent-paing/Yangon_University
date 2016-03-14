@@ -19,6 +19,10 @@
 -keep class com.google.android.gms.maps.** { *; }
 -keep interface com.google.android.gms.maps.** { *; }
 -keep class android.support.v7.widget.SearchView{ *; }
+-keep class com.google.android.gms.location.** { *; }
+-keep class com.google.common.** { *; }
+-keep interface com.google.common.** { *; }
+-keep interface com.google.android.gms.location.** { *; }
 
 -dontwarn com.gc.materialdesign.views.**
 

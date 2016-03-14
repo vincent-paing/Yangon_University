@@ -2,12 +2,12 @@ package aungkyawpaing.yangonuniversity.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import aungkyawpaing.yangonuniversity.BuildConfig;
 import aungkyawpaing.yangonuniversity.ClassModels.Department;
 import aungkyawpaing.yangonuniversity.R;
 import aungkyawpaing.yangonuniversity.Utils.Util;
@@ -49,7 +49,7 @@ public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.Vi
         Util.unescape(department.getDept_info().substring(0, 125) + "....."));
 
     int resID = mContext.getResources()
-        .getIdentifier(department.getDept_img(), "drawable", "aungkyawpaing.yangonuniversity");
+        .getIdentifier(department.getDept_img(), "drawable", BuildConfig.APPLICATION_ID);
 
     Picasso.with(mContext).load(resID).into(holder.mDeptImage);
   }

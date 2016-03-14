@@ -17,4 +17,10 @@
   <string name="navigation_item_one_title">Department</string>
   <string name="navigation_item_two_title">Map</string>
   <string name="menu_search_title">Search</string>
+
+  <string name="dialog_okay">OK</string>
+  <string name="dialog_negative">Don\'t Show Again</string>
+  <string name="gps_title">ERROR</string>
+  <string name="gps_message">Fail to Connect. Tracking Feature is OFF</string>
+  <string name="gps_off_message">Location is Turned Off. Tracking Feature is OFF</string>
 </resources>

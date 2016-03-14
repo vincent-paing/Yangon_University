@@ -1,7 +1,11 @@
 package aungkyawpaing.yangonuniversity.Fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,7 +18,13 @@ import aungkyawpaing.yangonuniversity.Activities.MainActivity;
 import aungkyawpaing.yangonuniversity.ClassModels.MarkerData;
 import aungkyawpaing.yangonuniversity.R;
 import aungkyawpaing.yangonuniversity.Utils.Database;
+import aungkyawpaing.yangonuniversity.Utils.Pref;
 import butterknife.ButterKnife;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,20 +41,28 @@ import java.util.ArrayList;
 /**
  * Created by Vincent on 13-May-15.
  */
-public class CampusMapFragment extends Fragment {
+public class CampusMapFragment extends Fragment
+    implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
   private GoogleMap mMap;
-  private LatLng NEBOUND = new LatLng(16.835285, 96.142251);
-  private LatLng SWBOUND = new LatLng(16.825524, 96.128848);
+  private double MAX_LNG = 96.142251;
+  private double MIN_LNG = 96.128848;
+  private double MAX_LAT = 16.835285;
+  private double MIN_LAT = 16.825524;
+  private LatLng NEBOUND = new LatLng(MAX_LAT, MAX_LNG);
+  private LatLng SWBOUND = new LatLng(MIN_LAT, MIN_LNG);
   private LatLngBounds MapBoundary = new LatLngBounds(SWBOUND, NEBOUND);
   private LatLng CENTRE = new LatLng(16.828693, 96.135320);
   private Handler MapHandler;
   private int MAX_ZOOM = 20;
   private int MIN_ZOOM = 16;
   private ArrayList<Marker> markers;
-  private ArrayList<MarkerData> markerdata_list;
   private Context mContext;
   private static String ARG_MAP = "ARG_MAP";
+  private GoogleApiClient mGoogleApiClient;
+  private LocationRequest mLocationRequest;
+  private MapLocationListener mLocationListener;
+  private Pref mPref;
 
   public static CampusMapFragment newInstance() {
     CampusMapFragment fragment = new CampusMapFragment();
@@ -68,8 +86,11 @@ public class CampusMapFragment extends Fragment {
     ButterKnife.inject(this, rootView);
 
     mContext = rootView.getContext();
+    mPref = Pref.getInstance(mContext);
+
     mMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map)).getMap();
 
+    buildGoogleApiClient();
     initalizeMap();
     setHasOptionsMenu(true);
 
@@ -79,7 +100,7 @@ public class CampusMapFragment extends Fragment {
         if (marker.getTitle().equals(query)) {
           CameraPosition newPosition =
               new CameraPosition(marker.getPosition(), 18, mMap.getCameraPosition().tilt,
-              mMap.getCameraPosition().bearing);
+                  mMap.getCameraPosition().bearing);
           CameraUpdate update = CameraUpdateFactory.newCameraPosition(newPosition);
           mMap.moveCamera(update);
           marker.showInfoWindow();
@@ -88,6 +109,25 @@ public class CampusMapFragment extends Fragment {
     }
 
     return rootView;
+  }
+
+  protected synchronized void buildGoogleApiClient() {
+    mGoogleApiClient = new GoogleApiClient.Builder(mContext).addConnectionCallbacks(this)
+        .addOnConnectionFailedListener(this)
+        .addApi(LocationServices.API)
+        .build();
+  }
+
+  @Override public void onStart() {
+    super.onStart();
+    mGoogleApiClient.connect();
+  }
+
+  @Override public void onStop() {
+    if (mGoogleApiClient.isConnected()) {
+      mGoogleApiClient.disconnect();
+    }
+    super.onStop();
   }
 
   @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -146,9 +186,9 @@ public class CampusMapFragment extends Fragment {
     CameraPosition cameraPosition = new CameraPosition.Builder().target(CENTRE).zoom(17).build();
     mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     Database database = Database.getDatbase(mContext);
-    markerdata_list = new ArrayList<MarkerData>();
-    markers = new ArrayList<Marker>();
+    ArrayList<MarkerData> markerdata_list = new ArrayList<MarkerData>();
     markerdata_list.addAll(database.getallMarkers());
+    markers = new ArrayList<>(markerdata_list.size());
     for (MarkerData data : markerdata_list) {
       Marker marker = mMap.addMarker(
           new MarkerOptions().position(new LatLng(data.getLatitude(), data.getLongitude()))
@@ -161,5 +201,96 @@ public class CampusMapFragment extends Fragment {
   @Override public void onAttach(Activity activity) {
     super.onAttach(activity);
     ((MainActivity) activity).onSectionAttached(2);
+  }
+
+  @Override public void onConnected(Bundle bundle) {
+    Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+    if (mLastLocation != null) {
+      if (isLocationWithinBound(mLastLocation)) {
+        mMap.setMyLocationEnabled(true);
+      }
+    } else {
+
+      requestLocation();
+    }
+  }
+
+  private void requestLocation() {
+    //ADD LOCATION REQUEST CODE HERE
+    //@TODO
+    LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+    boolean isGPSEnabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    boolean isNETWORKEnabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+    boolean canLocationRequest = isGPSEnabled || isNETWORKEnabled;
+
+    if (!canLocationRequest) {
+      showErrorDialog(R.string.gps_off_message);
+    } else {
+      mLocationRequest = new LocationRequest();
+      mLocationRequest.setInterval(10000);
+      mLocationRequest.setFastestInterval(5000);
+      mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+      mLocationListener = new MapLocationListener();
+
+      LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest,
+          mLocationListener);
+    }
+  }
+
+  @Override public void onConnectionSuspended(int i) {
+
+  }
+
+  @Override public void onConnectionFailed(ConnectionResult connectionResult) {
+    showErrorDialog(R.string.gps_message);
+  }
+
+  private class MapLocationListener implements LocationListener {
+    @Override public void onLocationChanged(Location location) {
+      //REMOVE LOCATION REQUEST
+      //@TODO:
+      if (location != null) {
+        if (isLocationWithinBound(location)) {
+          mMap.setMyLocationEnabled(true);
+        } else {
+          mMap.setMyLocationEnabled(false);
+        }
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,
+            mLocationListener);
+      }
+    }
+  }
+
+  private boolean isLocationWithinBound(Location location) {
+    if (location.getLongitude() < MAX_LNG
+        && location.getLongitude() > MIN_LNG
+        && location.getLatitude() < MAX_LAT
+        && location.getLatitude() > MIN_LAT) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private void showErrorDialog(int dialogID) {
+    boolean status = mPref.getDialogStatus();
+    if (status) {
+      AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+      builder.setTitle(R.string.gps_title)
+          .setMessage(dialogID)
+          .setPositiveButton(R.string.dialog_okay, new DialogInterface.OnClickListener() {
+            @Override public void onClick(DialogInterface dialogInterface, int i) {
+              dialogInterface.dismiss();
+            }
+          })
+          .setNegativeButton(R.string.dialog_negative, new DialogInterface.OnClickListener() {
+            @Override public void onClick(DialogInterface dialogInterface, int i) {
+              mPref.setDialogStatus(false);
+            }
+          })
+          .show();
+    }
   }
 }

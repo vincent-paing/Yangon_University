@@ -4,16 +4,14 @@
   <group android:checkableBehavior="single">
 
     <item
-        android:id="@+id/navigation_item_1"
-        android:checked="true"
-        android:title="@string/navigation_item_one_title"
-        />
+      android:id="@+id/navigation_item_1"
+      android:checked="true"
+      android:title="@string/navigation_item_one_title" />
 
     <item
-        android:id="@+id/navigation_item_2"
-        android:checked="false"
-        android:title="@string/navigation_item_two_title"
-        />
+      android:id="@+id/navigation_item_2"
+      android:checked="false"
+      android:title="@string/navigation_item_two_title" />
 
   </group>
 
