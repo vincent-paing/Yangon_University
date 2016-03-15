@@ -34,6 +34,7 @@ import butterknife.Bind;
 public class MainActivity extends AppCompatActivity {
 
   @Bind(R.id.my_awesome_toolbar) Toolbar toolbar;
+  @Bind(R.id.app_bar) AppBarLayout appBarLayout;
   @Bind(R.id.main_tab_layout) TabLayout mTabLayout;
   @Bind(R.id.pager) ViewPager mViewPager;
 
@@ -59,6 +60,20 @@ public class MainActivity extends AppCompatActivity {
     ViewPagerAdapter pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
     mViewPager.setAdapter(pagerAdapter);
     mTabLayout.setupWithViewPager(mViewPager);
+
+    mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+      @Override
+      public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+      }
+
+      @Override public void onPageSelected(int position) {
+        appBarLayout.setExpanded(true);
+      }
+
+      @Override public void onPageScrollStateChanged(int state) {
+
+      }
+    });
   }
 
 
