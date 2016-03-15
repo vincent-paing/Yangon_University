@@ -1,10 +1,9 @@
-package aungkyawpaing.yangonuniversity.Activities;
+package aungkyawpaing.yangonuniversity.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,14 +20,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import aungkyawpaing.yangonuniversity.Fragments.CampusMapFragment;
-import aungkyawpaing.yangonuniversity.Fragments.DepartmentFragment;
-import aungkyawpaing.yangonuniversity.Fragments.SearchResultFragment;
+import aungkyawpaing.yangonuniversity.fragments.CampusMapFragment;
+import aungkyawpaing.yangonuniversity.fragments.DepartmentFragment;
+import aungkyawpaing.yangonuniversity.fragments.SearchResultFragment;
 import aungkyawpaing.yangonuniversity.R;
-import aungkyawpaing.yangonuniversity.Utils.Util;
+import aungkyawpaing.yangonuniversity.utils.Util;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package aungkyawpaing.yangonuniversity.Adapters;
+package aungkyawpaing.yangonuniversity.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import aungkyawpaing.yangonuniversity.BuildConfig;
-import aungkyawpaing.yangonuniversity.ClassModels.Department;
+import aungkyawpaing.yangonuniversity.models.Department;
 import aungkyawpaing.yangonuniversity.R;
-import aungkyawpaing.yangonuniversity.Utils.Util;
+import aungkyawpaing.yangonuniversity.utils.Util;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.squareup.picasso.Picasso;

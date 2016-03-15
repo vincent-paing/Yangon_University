@@ -1,4 +1,4 @@
-package aungkyawpaing.yangonuniversity.Adapters;
+package aungkyawpaing.yangonuniversity.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,10 +11,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import aungkyawpaing.yangonuniversity.ClassModels.Department;
-import aungkyawpaing.yangonuniversity.ClassModels.MarkerData;
+import aungkyawpaing.yangonuniversity.models.MarkerData;
 import aungkyawpaing.yangonuniversity.R;
-import aungkyawpaing.yangonuniversity.Utils.Util;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 

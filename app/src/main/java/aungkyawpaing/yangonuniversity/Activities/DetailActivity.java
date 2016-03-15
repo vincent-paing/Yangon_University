@@ -1,19 +1,16 @@
-package aungkyawpaing.yangonuniversity.Activities;
+package aungkyawpaing.yangonuniversity.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
-import aungkyawpaing.yangonuniversity.ClassModels.Department;
+import aungkyawpaing.yangonuniversity.models.Department;
 import aungkyawpaing.yangonuniversity.R;
-import aungkyawpaing.yangonuniversity.Utils.Constants;
-import aungkyawpaing.yangonuniversity.Utils.Util;
+import aungkyawpaing.yangonuniversity.utils.Constants;
+import aungkyawpaing.yangonuniversity.utils.Util;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 

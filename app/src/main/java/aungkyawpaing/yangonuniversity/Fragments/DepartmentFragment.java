@@ -1,4 +1,4 @@
-package aungkyawpaing.yangonuniversity.Fragments;
+package aungkyawpaing.yangonuniversity.fragments;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,13 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import aungkyawpaing.yangonuniversity.Activities.DetailActivity;
-import aungkyawpaing.yangonuniversity.Activities.MainActivity;
-import aungkyawpaing.yangonuniversity.Adapters.DepartmentAdapter;
-import aungkyawpaing.yangonuniversity.ClassModels.Department;
+import aungkyawpaing.yangonuniversity.activities.DetailActivity;
+import aungkyawpaing.yangonuniversity.activities.MainActivity;
+import aungkyawpaing.yangonuniversity.adapters.DepartmentAdapter;
+import aungkyawpaing.yangonuniversity.models.Department;
 import aungkyawpaing.yangonuniversity.R;
-import aungkyawpaing.yangonuniversity.Utils.Constants;
-import aungkyawpaing.yangonuniversity.Utils.Database;
+import aungkyawpaing.yangonuniversity.utils.Constants;
+import aungkyawpaing.yangonuniversity.utils.Database;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import java.util.ArrayList;

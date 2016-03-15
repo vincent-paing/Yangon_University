@@ -1,4 +1,4 @@
-package aungkyawpaing.yangonuniversity.Utils;
+package aungkyawpaing.yangonuniversity.utils;
 
 /**
  * Created by Vincent on 14-May-15.

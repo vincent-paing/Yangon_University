@@ -1,4 +1,4 @@
-package aungkyawpaing.yangonuniversity.Utils;
+package aungkyawpaing.yangonuniversity.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

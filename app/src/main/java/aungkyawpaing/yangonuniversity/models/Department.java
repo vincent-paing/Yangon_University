@@ -1,4 +1,4 @@
-package aungkyawpaing.yangonuniversity.ClassModels;
+package aungkyawpaing.yangonuniversity.models;
 
 import java.io.Serializable;
 

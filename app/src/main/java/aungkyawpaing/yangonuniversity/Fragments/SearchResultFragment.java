@@ -1,4 +1,4 @@
-package aungkyawpaing.yangonuniversity.Fragments;
+package aungkyawpaing.yangonuniversity.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,11 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import aungkyawpaing.yangonuniversity.Activities.MainActivity;
-import aungkyawpaing.yangonuniversity.Adapters.SearchListAdapter;
-import aungkyawpaing.yangonuniversity.ClassModels.MarkerData;
+import aungkyawpaing.yangonuniversity.activities.MainActivity;
+import aungkyawpaing.yangonuniversity.adapters.SearchListAdapter;
+import aungkyawpaing.yangonuniversity.models.MarkerData;
 import aungkyawpaing.yangonuniversity.R;
-import aungkyawpaing.yangonuniversity.Utils.Database;
+import aungkyawpaing.yangonuniversity.utils.Database;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import java.util.ArrayList;

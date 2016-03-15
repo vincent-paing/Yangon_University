@@ -1,10 +1,10 @@
-package aungkyawpaing.yangonuniversity.Utils;
+package aungkyawpaing.yangonuniversity.utils;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import aungkyawpaing.yangonuniversity.ClassModels.Department;
-import aungkyawpaing.yangonuniversity.ClassModels.MarkerData;
+import aungkyawpaing.yangonuniversity.models.Department;
+import aungkyawpaing.yangonuniversity.models.MarkerData;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 import java.util.ArrayList;
 

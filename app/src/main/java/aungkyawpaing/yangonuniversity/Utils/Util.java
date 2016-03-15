@@ -1,4 +1,4 @@
-package aungkyawpaing.yangonuniversity.Utils;
+package aungkyawpaing.yangonuniversity.utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,7 +6,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import java.util.ArrayList;
 
-import aungkyawpaing.yangonuniversity.ClassModels.Department;
+import aungkyawpaing.yangonuniversity.models.Department;
 
 /**
  * Created by Vincent on 13-May-15.
