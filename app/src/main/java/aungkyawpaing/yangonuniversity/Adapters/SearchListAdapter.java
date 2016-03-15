@@ -7,14 +7,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import aungkyawpaing.yangonuniversity.models.MarkerData;
 import aungkyawpaing.yangonuniversity.R;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Created by Vincent on 19-May-15.
@@ -51,11 +51,11 @@ public class SearchListAdapter extends ArrayAdapter<MarkerData> {
   }
 
   static class ViewHolder {
-    @InjectView(R.id.item_search_image) ImageView mSearchImage;
-    @InjectView(R.id.item_search_title) TextView mSearchTitle;
+    @Bind(R.id.item_search_image) ImageView mSearchImage;
+    @Bind(R.id.item_search_title) TextView mSearchTitle;
 
     public ViewHolder(View view) {
-      ButterKnife.inject(this, view);
+      ButterKnife.bind(this, view);
     }
   }
 }

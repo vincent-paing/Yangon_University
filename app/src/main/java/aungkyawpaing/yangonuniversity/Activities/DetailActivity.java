@@ -11,22 +11,22 @@ import aungkyawpaing.yangonuniversity.models.Department;
 import aungkyawpaing.yangonuniversity.R;
 import aungkyawpaing.yangonuniversity.utils.Constants;
 import aungkyawpaing.yangonuniversity.utils.Util;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Created by Vincent on 14-May-15.
  */
 public class DetailActivity extends ActionBarActivity {
 
-    @InjectView(R.id.txt_dept_info) TextView mInfoTextView;
-    @InjectView(R.id.my_awesome_toolbar) Toolbar mToolBar;
+    @Bind(R.id.txt_dept_info) TextView mInfoTextView;
+    @Bind(R.id.my_awesome_toolbar) Toolbar mToolBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         Intent intent = getIntent();
         Department department = (Department) intent.getSerializableExtra(Constants.ARG_DEPARMENT);

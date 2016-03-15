@@ -12,7 +12,7 @@ import aungkyawpaing.yangonuniversity.models.Department;
 import aungkyawpaing.yangonuniversity.R;
 import aungkyawpaing.yangonuniversity.utils.Util;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
@@ -63,13 +63,13 @@ public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.Vi
   }
 
   public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    @InjectView(R.id.item_department_image) ImageView mDeptImage;
-    @InjectView(R.id.item_department_name) TextView mDeptName;
-    @InjectView(R.id.item_department_detail) TextView mDeptDetail;
+    @Bind(R.id.item_department_image) ImageView mDeptImage;
+    @Bind(R.id.item_department_name) TextView mDeptName;
+    @Bind(R.id.item_department_detail) TextView mDeptDetail;
 
     public ViewHolder(View itemView) {
       super(itemView);
-      ButterKnife.inject(this, itemView);
+      ButterKnife.bind(this, itemView);
       itemView.setOnClickListener(this);
     }
 

@@ -7,8 +7,8 @@
 
   <ImageView
     android:id="@+id/item_department_image"
-    android:layout_width="@dimen/_80sdp"
-    android:layout_height="@dimen/_90sdp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:paddingRight="4dp"
     android:src="@mipmap/ic_launcher" />
 

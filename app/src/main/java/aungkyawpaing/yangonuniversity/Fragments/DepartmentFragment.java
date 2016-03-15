@@ -19,7 +19,7 @@ import aungkyawpaing.yangonuniversity.R;
 import aungkyawpaing.yangonuniversity.utils.Constants;
 import aungkyawpaing.yangonuniversity.utils.Database;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 import java.util.ArrayList;
 
 /**
@@ -27,7 +27,7 @@ import java.util.ArrayList;
  */
 public class DepartmentFragment extends Fragment {
 
-  @InjectView(R.id.department_list) RecyclerView mDepartmentRecyclerView;
+  @Bind(R.id.department_list) RecyclerView mDepartmentRecyclerView;
   private ArrayList<Department> mDepartmentList;
   private Database mDatabase;
   private Context mContext;
@@ -39,7 +39,7 @@ public class DepartmentFragment extends Fragment {
   @Nullable @Override public View onCreateView(final LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View rootView = inflater.inflate(R.layout.fragment_departments, container, false);
-    ButterKnife.inject(this, rootView);
+    ButterKnife.bind(this, rootView);
 
     mContext = getActivity().getApplicationContext();
 

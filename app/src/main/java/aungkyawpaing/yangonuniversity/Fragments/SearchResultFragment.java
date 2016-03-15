@@ -14,8 +14,8 @@ import aungkyawpaing.yangonuniversity.adapters.SearchListAdapter;
 import aungkyawpaing.yangonuniversity.models.MarkerData;
 import aungkyawpaing.yangonuniversity.R;
 import aungkyawpaing.yangonuniversity.utils.Database;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import java.util.ArrayList;
 
 /**
@@ -23,7 +23,7 @@ import java.util.ArrayList;
  */
 public class SearchResultFragment extends Fragment {
 
-  @InjectView(R.id.list_search) ListView searchResultList;
+  @Bind(R.id.list_search) ListView searchResultList;
   private ArrayList<MarkerData> markerDatas = new ArrayList<>();
   private SearchListAdapter mSearchListAdapter;
   private Database database;
@@ -42,7 +42,7 @@ public class SearchResultFragment extends Fragment {
   @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View rootView = inflater.inflate(R.layout.fragment_search, container, false);
-    ButterKnife.inject(this, rootView);
+    ButterKnife.bind(this, rootView);
 
     mContext = getActivity().getApplicationContext();
     query = getArguments().getString(ARG_QUERY);

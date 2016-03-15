@@ -90,7 +90,7 @@ public class CampusMapFragment extends Fragment
   @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View rootView = inflater.inflate(R.layout.fragment_map, container, false);
-    ButterKnife.inject(this, rootView);
+    ButterKnife.bind(this, rootView);
 
     mContext = rootView.getContext();
     mPref = Pref.getInstance(mContext);

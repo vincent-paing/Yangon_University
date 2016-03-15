@@ -26,14 +26,14 @@ import aungkyawpaing.yangonuniversity.fragments.SearchResultFragment;
 import aungkyawpaing.yangonuniversity.R;
 import aungkyawpaing.yangonuniversity.utils.Util;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 
 public class MainActivity extends AppCompatActivity {
 
-  @InjectView(R.id.my_awesome_toolbar) Toolbar toolbar;
-  @InjectView(R.id.navigation_view) NavigationView mNavigationView;
-  @InjectView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
-  @InjectView(R.id.app_bar) AppBarLayout mAppBarLayout;
+  @Bind(R.id.my_awesome_toolbar) Toolbar toolbar;
+  @Bind(R.id.navigation_view) NavigationView mNavigationView;
+  @Bind(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+  @Bind(R.id.app_bar) AppBarLayout mAppBarLayout;
 
   private final Handler mHandler = new Handler();
   private CharSequence mTitle;
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    ButterKnife.inject(this);
+    ButterKnife.bind(this);
 
     mActivity = this;
     mContext = getApplicationContext();
