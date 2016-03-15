@@ -47,7 +47,7 @@ import java.util.ArrayList;
  * Created by Vincent on 13-May-15.
  */
 public class CampusMapFragment extends Fragment
-    implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+    implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, MainActivity.OnDataPass {
 
   private GoogleMap mMap;
   private double MAX_LNG = 96.142251;
@@ -100,21 +100,6 @@ public class CampusMapFragment extends Fragment
     buildGoogleApiClient();
     initalizeMap();
     setHasOptionsMenu(true);
-
-    if (getArguments().getString(ARG_MAP) != null) {
-      String query = getArguments().getString(ARG_MAP);
-      for (Marker marker : markers) {
-        if (marker.getTitle().equals(query)) {
-          CameraPosition newPosition =
-              new CameraPosition(marker.getPosition(), 18, mMap.getCameraPosition().tilt,
-                  mMap.getCameraPosition().bearing);
-          CameraUpdate update = CameraUpdateFactory.newCameraPosition(newPosition);
-          mMap.moveCamera(update);
-          marker.showInfoWindow();
-        }
-      }
-    }
-
     return rootView;
   }
 
@@ -220,11 +205,6 @@ public class CampusMapFragment extends Fragment
     }
   }
 
-  @Override public void onAttach(Activity activity) {
-    super.onAttach(activity);
-    ((MainActivity) activity).onSectionAttached(2);
-  }
-
   @Override public void onConnected(Bundle bundle) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
       Log.e("wtf", "nigga");
@@ -278,6 +258,19 @@ public class CampusMapFragment extends Fragment
     showErrorDialog(R.string.gps_message);
   }
 
+  @Override public void onDataPass(String data) {
+    for (Marker marker : markers) {
+      if (marker.getTitle().equals(data)) {
+        CameraPosition newPosition =
+            new CameraPosition(marker.getPosition(), 18, mMap.getCameraPosition().tilt,
+                mMap.getCameraPosition().bearing);
+        CameraUpdate update = CameraUpdateFactory.newCameraPosition(newPosition);
+        mMap.moveCamera(update);
+        marker.showInfoWindow();
+      }
+    }
+  }
+
   private class MapLocationListener implements LocationListener {
     @Override public void onLocationChanged(Location location) {
       //REMOVE LOCATION REQUEST
@@ -323,5 +316,10 @@ public class CampusMapFragment extends Fragment
           })
           .show();
     }
+  }
+
+  @Override public void onAttach(Activity activity) {
+    super.onAttach(activity);
+    ((MainActivity) activity).setupDataPasser(this);
   }
 }

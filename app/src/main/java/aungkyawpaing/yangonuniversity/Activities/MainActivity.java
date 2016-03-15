@@ -10,8 +10,10 @@ import android.os.Handler;
 import android.os.PersistableBundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import aungkyawpaing.yangonuniversity.adapters.ViewPagerAdapter;
 import aungkyawpaing.yangonuniversity.fragments.CampusMapFragment;
 import aungkyawpaing.yangonuniversity.fragments.DepartmentFragment;
 import aungkyawpaing.yangonuniversity.fragments.SearchResultFragment;
@@ -31,19 +34,17 @@ import butterknife.Bind;
 public class MainActivity extends AppCompatActivity {
 
   @Bind(R.id.my_awesome_toolbar) Toolbar toolbar;
-  @Bind(R.id.navigation_view) NavigationView mNavigationView;
-  @Bind(R.id.drawer_layout) DrawerLayout mDrawerLayout;
-  @Bind(R.id.app_bar) AppBarLayout mAppBarLayout;
+  @Bind(R.id.main_tab_layout) TabLayout mTabLayout;
+  @Bind(R.id.pager) ViewPager mViewPager;
 
-  private final Handler mHandler = new Handler();
-  private CharSequence mTitle;
   public static FragmentManager fragmentManager;
-  private ActionBarDrawerToggle mDrawerToggle;
   private SearchView searchView;
   private MenuItem searchViewMenuItem;
   private boolean isSearchResultFragmentLoaded = false;
   private Activity mActivity;
-  private Context mContext;
+  private OnDataPass mDataPasser;
+
+  //Activity Setting up Realted Method
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -51,103 +52,22 @@ public class MainActivity extends AppCompatActivity {
     ButterKnife.bind(this);
 
     mActivity = this;
-    mContext = getApplicationContext();
     setSupportActionBar(toolbar);
-    mTitle = getTitle();
+    getSupportActionBar().setTitle(R.string.app_name);
+
     fragmentManager = getSupportFragmentManager();
-    fragmentManager.beginTransaction()
-        .replace(R.id.container, DepartmentFragment.newInstance())
-        .commit();
-
-    setupNavigationDrawer();
+    ViewPagerAdapter pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+    mViewPager.setAdapter(pagerAdapter);
+    mTabLayout.setupWithViewPager(mViewPager);
   }
 
-  private void setupNavigationDrawer() {
-    mDrawerToggle = new ActionBarDrawerToggle(this,                    /* host Activity */
-        mDrawerLayout,                    /* DrawerLayout object */
-        toolbar, R.string.navigation_drawer_open,  /* "open drawer" description for accessibility */
-        R.string.navigation_drawer_close  /* "close drawer" description for accessibility */) {
-      @Override public void onDrawerOpened(View drawerView) {
-        super.onDrawerOpened(drawerView);
-        if (MenuItemCompat.isActionViewExpanded(searchViewMenuItem)) {
-          MenuItemCompat.collapseActionView(searchViewMenuItem);
-        }
-        invalidateOptionsMenu();
-      }
 
-      @Override public void onDrawerClosed(View drawerView) {
-        super.onDrawerClosed(drawerView);
-        updateTitle();
-        invalidateOptionsMenu();
-      }
-    };
-    mDrawerLayout.post(new Runnable() {
-      @Override public void run() {
-        mDrawerToggle.syncState();
-      }
-    });
-    mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-    mNavigationView.setNavigationItemSelectedListener(
-        new NavigationView.OnNavigationItemSelectedListener() {
-          @Override public boolean onNavigationItemSelected(MenuItem menuItem) {
-            menuItem.setChecked(true);
-            mDrawerLayout.closeDrawers();
-            switch (menuItem.getItemId()) {
-              case R.id.navigation_item_1:
-                mHandler.postDelayed(new Runnable() {
-                  @Override public void run() {
-                    fragmentManager.beginTransaction()
-                        .replace(R.id.container, DepartmentFragment.newInstance())
-                        .commit();
-                  }
-                }, 300);
-                return true;
-              case R.id.navigation_item_2:
-                if (Util.checkifPlayServiceAvaiable(getApplicationContext(), mActivity)) {
-                  mHandler.postDelayed(new Runnable() {
-                    @Override public void run() {
-                      fragmentManager.beginTransaction()
-                          .replace(R.id.container, CampusMapFragment.newInstance())
-                          .commit();
-                      mAppBarLayout.setExpanded(true);
-                    }
-                  }, 300);
-                }
-                return true;
-              default:
-                return false;
-            }
-          }
-        });
+  public void setupDataPasser(CampusMapFragment campusMapFragment) {
+    mDataPasser = campusMapFragment;
   }
 
-  @Override public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-    super.onPostCreate(savedInstanceState, persistentState);
-  }
 
-  public void onSectionAttached(int number) {
-    switch (number) {
-      case 1:
-        mTitle = getString(R.string.nav_departments);
-        break;
-      case 2:
-        mTitle = getString(R.string.nav_map);
-        break;
-    }
-    updateTitle();
-  }
-
-  @Override protected void onResume() {
-    super.onResume();
-  }
-
-  public void updateTitle() {
-    if (mTitle != null) {
-      toolbar.setTitle(mTitle);
-    }
-  }
-
+  //Menu Related Methods
   @Override public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.menu_about, menu);
 
@@ -174,11 +94,16 @@ public class MainActivity extends AppCompatActivity {
     return super.onOptionsItemSelected(item);
   }
 
-  @Override public void onConfigurationChanged(Configuration newConfig) {
-    super.onConfigurationChanged(newConfig);
-    mDrawerToggle.onConfigurationChanged(newConfig);
+  public void setAllMenuItemVisiblity(Menu menu, MenuItem exception, boolean visibility) {
+    for (int i = 0; i < menu.size(); i++) {
+      MenuItem item = menu.getItem(i);
+      if (item != exception) {
+        item.setVisible(visibility);
+      }
+    }
   }
 
+  //Search Related Methods
   private class SearchViewExpandListener implements MenuItemCompat.OnActionExpandListener {
 
     @Override public boolean onMenuItemActionExpand(MenuItem menuItem) {
@@ -193,23 +118,6 @@ public class MainActivity extends AppCompatActivity {
         isSearchResultFragmentLoaded = false;
       }
       return true;
-    }
-  }
-
-  public void setAllMenuItemVisiblity(Menu menu, MenuItem exception, boolean visibility) {
-    for (int i = 0; i < menu.size(); i++) {
-      MenuItem item = menu.getItem(i);
-      if (item != exception) {
-        item.setVisible(visibility);
-      }
-    }
-  }
-
-  @Override public void onBackPressed() {
-    if (MenuItemCompat.isActionViewExpanded(searchViewMenuItem)) {
-      MenuItemCompat.collapseActionView(searchViewMenuItem);
-    } else {
-      super.onBackPressed();
     }
   }
 
@@ -234,12 +142,24 @@ public class MainActivity extends AppCompatActivity {
   }
 
   public void onSearchResultClick(String query) {
-    mNavigationView.getMenu().getItem(1).setChecked(true);
+    mTabLayout.getTabAt(1).select();
     fragmentManager.popBackStackImmediate();
     if (Util.checkifPlayServiceAvaiable(getApplicationContext(), mActivity)) {
-      fragmentManager.beginTransaction()
-          .replace(R.id.container, CampusMapFragment.newInstance(query))
-          .commit();
+      mDataPasser.onDataPass(query);
     }
+  }
+
+
+  @Override public void onBackPressed() {
+    if (MenuItemCompat.isActionViewExpanded(searchViewMenuItem)) {
+      MenuItemCompat.collapseActionView(searchViewMenuItem);
+    } else {
+      super.onBackPressed();
+    }
+  }
+
+
+  public interface OnDataPass {
+    public void onDataPass(String data);
   }
 }

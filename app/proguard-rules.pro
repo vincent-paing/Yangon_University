@@ -9,22 +9,24 @@
 
 # Add any project specific keep options here:
 
--keepattributes *Annotation*
--keep public class * extends android.support.design.widget.CoordinatorLayout.Behavior { *; }
--keep public class * extends android.support.design.widget.ViewOffsetBehavior { *; }
--keep class android.support.v4.app.** { *; }
--keep interface android.support.v4.app.** { *; }
--keep class android.support.v7.app.** { *; }
--keep interface android.support.v7.app.** { *; }
--keep class com.google.android.gms.maps.** { *; }
--keep interface com.google.android.gms.maps.** { *; }
--keep class android.support.v7.widget.SearchView{ *; }
--keep class com.google.android.gms.location.** { *; }
--keep class com.google.common.** { *; }
--keep interface com.google.common.** { *; }
--keep interface com.google.android.gms.location.** { *; }
 
--dontwarn com.gc.materialdesign.views.**
+
+-keep class butterknife.** { *; }
+-dontwarn butterknife.internal.**
+-keep class **$$ViewBinder { *; }
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <fields>;
+}
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <methods>;
+}
+
+-dontwarn com.squareup.okhttp.**
+
+-keep class android.support.v7.widget.SearchView{ *; }
+
 
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface

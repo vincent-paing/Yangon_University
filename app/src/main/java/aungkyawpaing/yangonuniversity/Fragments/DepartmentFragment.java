@@ -61,9 +61,4 @@ public class DepartmentFragment extends Fragment {
     mDepartmentRecyclerView.setAdapter(adapter);
     return rootView;
   }
-
-  @Override public void onAttach(Activity activity) {
-    super.onAttach(activity);
-    ((MainActivity) activity).onSectionAttached(1);
-  }
 }
