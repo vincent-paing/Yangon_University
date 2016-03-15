@@ -1,16 +1,23 @@
 package aungkyawpaing.yangonuniversity.Fragments;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +70,8 @@ public class CampusMapFragment extends Fragment
   private LocationRequest mLocationRequest;
   private MapLocationListener mLocationListener;
   private Pref mPref;
+  private int LOCATION_PERMISSION;
+  final private int REQUEST_CODE_LOCATION_PERMISSIONS = 123;
 
   public static CampusMapFragment newInstance() {
     CampusMapFragment fragment = new CampusMapFragment();
@@ -109,6 +118,21 @@ public class CampusMapFragment extends Fragment
     }
 
     return rootView;
+  }
+
+  @Override public void onRequestPermissionsResult(int requestCode, String[] permissions,
+      int[] grantResults) {
+    switch (requestCode) {
+      case REQUEST_CODE_LOCATION_PERMISSIONS:
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+          requestLocation();
+        } else {
+          showErrorDialog(R.string.permission_denied_message);
+        }
+        break;
+      default:
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
   }
 
   protected synchronized void buildGoogleApiClient() {
@@ -204,6 +228,21 @@ public class CampusMapFragment extends Fragment
   }
 
   @Override public void onConnected(Bundle bundle) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      Log.e("wtf", "nigga");
+      LOCATION_PERMISSION = ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION);
+      if (LOCATION_PERMISSION != PackageManager.PERMISSION_GRANTED) {
+        requestPermissions(new String[] { Manifest.permission.ACCESS_COARSE_LOCATION },
+            REQUEST_CODE_LOCATION_PERMISSIONS);
+      } else {
+        requestLocation();
+      }
+    } else {
+      requestLocation();
+    }
+  }
+
+  private void requestLocation() {
     Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
     if (mLastLocation != null) {
@@ -211,31 +250,25 @@ public class CampusMapFragment extends Fragment
         mMap.setMyLocationEnabled(true);
       }
     } else {
+      //@TODO
+      LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+      boolean isGPSEnabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+      boolean isNETWORKEnabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-      requestLocation();
-    }
-  }
+      boolean canLocationRequest = isGPSEnabled || isNETWORKEnabled;
 
-  private void requestLocation() {
-    //ADD LOCATION REQUEST CODE HERE
-    //@TODO
-    LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-    boolean isGPSEnabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-    boolean isNETWORKEnabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+      if (!canLocationRequest) {
+        showErrorDialog(R.string.gps_off_message);
+      } else {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationListener = new MapLocationListener();
 
-    boolean canLocationRequest = isGPSEnabled || isNETWORKEnabled;
-
-    if (!canLocationRequest) {
-      showErrorDialog(R.string.gps_off_message);
-    } else {
-      mLocationRequest = new LocationRequest();
-      mLocationRequest.setInterval(10000);
-      mLocationRequest.setFastestInterval(5000);
-      mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-      mLocationListener = new MapLocationListener();
-
-      LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest,
-          mLocationListener);
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest,
+            mLocationListener);
+      }
     }
   }
 

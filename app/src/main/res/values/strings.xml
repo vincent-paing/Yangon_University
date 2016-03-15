@@ -23,4 +23,6 @@
   <string name="gps_title">ERROR</string>
   <string name="gps_message">Fail to Connect. Tracking Feature is OFF</string>
   <string name="gps_off_message">Location is Turned Off. Tracking Feature is OFF</string>
+  <string name="permission_denied_message">Permission Denied</string>
+
 </resources>
