@@ -51,7 +51,10 @@ public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.Vi
     int resID = mContext.getResources()
         .getIdentifier(department.getDept_img(), "drawable", BuildConfig.APPLICATION_ID);
 
-    Picasso.with(mContext).load(resID).into(holder.mDeptImage);
+    Picasso.with(mContext)
+        .load(
+            "https://firebasestorage.googleapis.com/v0/b/windy-watch-94309.appspot.com/o/departments%2Fanthropology.png?alt=media&token=97fdd5ca-9697-440d-9de3-3553fcd4e6c8")
+        .into(holder.mDeptImage);
   }
 
   public interface OnItemClickListener {

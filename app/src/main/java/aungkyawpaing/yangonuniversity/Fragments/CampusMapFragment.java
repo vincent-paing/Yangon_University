@@ -246,6 +246,8 @@ public class CampusMapFragment extends Fragment
 
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest,
             mLocationListener);
+
+
       }
     }
   }

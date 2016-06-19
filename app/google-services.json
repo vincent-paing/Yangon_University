@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "363556247207",
+    "firebase_url": "https://windy-watch-94309.firebaseio.com",
+    "project_id": "windy-watch-94309",
+    "storage_bucket": "windy-watch-94309.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:363556247207:android:ee6ffa2598b9624c",
+        "android_client_info": {
+          "package_name": "aungkyawpaing.yangonuniversity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "363556247207-qmp39f4n1gmfsq4fns1leascj524feei.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "aungkyawpaing.yangonuniversity",
+            "certificate_hash": "BB7560EC50912D861033C34503F0931A09343AE1"
+          }
+        },
+        {
+          "client_id": "363556247207-uqi142fdhj3tcltcdeuenv4nd74ghup8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOgYPypZKBAfSgbXPOt5FkkuyrH29EiFc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "363556247207-uqi142fdhj3tcltcdeuenv4nd74ghup8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

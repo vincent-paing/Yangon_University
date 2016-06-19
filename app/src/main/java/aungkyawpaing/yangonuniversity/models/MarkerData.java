@@ -7,6 +7,7 @@ import aungkyawpaing.yangonuniversity.BuildConfig;
  * Created by Vincent on 13-May-15.
  */
 public class MarkerData {
+  private int id;
   private String title;
   private double longitude;
   private double latitude;
@@ -22,6 +23,18 @@ public class MarkerData {
     this.longitude = longitude;
     this.latitude = latitude;
     this.iconres = iconres;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public String getIconres() {
+    return iconres;
   }
 
   public String getTitle() {
