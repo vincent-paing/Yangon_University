@@ -22,12 +22,15 @@ import java.util.ArrayList;
 public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.ViewHolder> {
 
   private ArrayList<Department> mDataSet = new ArrayList<>();
-  private Context mContext;
   OnItemClickListener mItemClickListener;
 
-  public DepartmentAdapter(ArrayList<Department> mDataSet, Context context) {
-    this.mDataSet.addAll(mDataSet);
-    mContext = context;
+  //public DepartmentAdapter(ArrayList<Department> mDataSet, Context context) {
+  //  this.mDataSet.addAll(mDataSet);
+  //}
+
+  public void setDepartments(ArrayList<Department> mDataSet) {
+    this.mDataSet = mDataSet;
+    notifyDataSetChanged();
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -44,16 +47,16 @@ public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.Vi
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
     final Department department = mDataSet.get(position);
 
-    holder.mDeptName.setText(department.getDept_name());
-    holder.mDeptDetail.setText(
-        Util.unescape(department.getDept_info().substring(0, 125) + "....."));
+    holder.mDeptName.setText(department.name);
+    holder.mDeptDetail.setText(Util.unescape(department.info.substring(0, 125) + "....."));
 
-    int resID = mContext.getResources()
-        .getIdentifier(department.getDept_img(), "drawable", BuildConfig.APPLICATION_ID);
+    //int resID = mContext.getResources()
+    //    .getIdentifier(department.image, "drawable", BuildConfig.APPLICATION_ID);
 
-    Picasso.with(mContext)
-        .load(
-            "https://firebasestorage.googleapis.com/v0/b/windy-watch-94309.appspot.com/o/departments%2Fanthropology.png?alt=media&token=97fdd5ca-9697-440d-9de3-3553fcd4e6c8")
+    Picasso.with(holder.itemView.getContext())
+        .load(department.image)
+        .placeholder(R.drawable.placeholder)
+        .fit()
         .into(holder.mDeptImage);
   }
 

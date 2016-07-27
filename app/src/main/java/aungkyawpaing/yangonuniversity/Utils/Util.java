@@ -13,19 +13,19 @@ import aungkyawpaing.yangonuniversity.models.Department;
  */
 public class Util {
 
-  public static ArrayList<Department> SortDepartment(ArrayList<Department> dept_list) {
-    for (int i = 0, size = dept_list.size(); i < size - 1; i++) {
-      for (int j = 0; j < size - i - 1; j++) {
-        Department department = dept_list.get(j);
-        Department nextDepartment = dept_list.get(j + 1);
-        if (department.getDept_name().compareTo(nextDepartment.getDept_name()) > 0) {
-          dept_list.set(j, nextDepartment);
-          dept_list.set(j + 1, department);
-        }
-      }
-    }
-    return dept_list;
-  }
+  //public static ArrayList<Department> SortDepartment(ArrayList<Department> dept_list) {
+  //  for (int i = 0, size = dept_list.size(); i < size - 1; i++) {
+  //    for (int j = 0; j < size - i - 1; j++) {
+  //      Department department = dept_list.get(j);
+  //      Department nextDepartment = dept_list.get(j + 1);
+  //      if (department.getDept_name().compareTo(nextDepartment.getDept_name()) > 0) {
+  //        dept_list.set(j, nextDepartment);
+  //        dept_list.set(j + 1, department);
+  //      }
+  //    }
+  //  }
+  //  return dept_list;
+  //}
 
   public static String unescape(String description) {
     return description.replaceAll("\\\\n", "\\\n").replaceAll("\\\\t", "\\\t");

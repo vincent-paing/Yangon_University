@@ -14,6 +14,7 @@ public class FireBaseDatabaseManager {
   public static FirebaseDatabase getDatabase() {
     if (database == null) {
       database = FirebaseDatabase.getInstance();
+      database.setPersistenceEnabled(true);
     }
     return database;
   }
@@ -21,6 +22,7 @@ public class FireBaseDatabaseManager {
   public static DatabaseReference getDepartmentReference() {
     if (departmentRef == null) {
       departmentRef = getDatabase().getReference("departments");
+      departmentRef.keepSynced(true);
     }
     return departmentRef;
   }

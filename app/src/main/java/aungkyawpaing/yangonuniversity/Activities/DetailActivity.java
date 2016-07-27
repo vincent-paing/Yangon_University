@@ -19,33 +19,31 @@ import butterknife.ButterKnife;
  */
 public class DetailActivity extends ActionBarActivity {
 
-    @Bind(R.id.txt_dept_info) TextView mInfoTextView;
-    @Bind(R.id.my_awesome_toolbar) Toolbar mToolBar;
+  @Bind(R.id.txt_dept_info) TextView mInfoTextView;
+  @Bind(R.id.my_awesome_toolbar) Toolbar mToolBar;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
-        ButterKnife.bind(this);
+  @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_detail);
+    ButterKnife.bind(this);
 
-        Intent intent = getIntent();
-        Department department = (Department) intent.getSerializableExtra(Constants.ARG_DEPARMENT);
+    Intent intent = getIntent();
+    Department department = (Department) intent.getSerializableExtra(Constants.ARG_DEPARMENT);
 
-        mToolBar.setTitle(department.getDept_name().substring(13));
-        setSupportActionBar(mToolBar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mInfoTextView.setText(Util.unescape(department.getDept_info()));
+    mToolBar.setTitle(department.name.substring(13));
+    setSupportActionBar(mToolBar);
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    mInfoTextView.setText(Util.unescape(department.info));
+  }
+
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      // Respond to the action bar's Up/Home button
+      case android.R.id.home:
+        onBackPressed();
+        finish();
+        return true;
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                onBackPressed();
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+    return super.onOptionsItemSelected(item);
+  }
 }
